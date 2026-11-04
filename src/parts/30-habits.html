@@ -1,0 +1,31 @@
+<section class="plate" id="habits" aria-labelledby="habits-h">
+  <h2 class="plate-h" id="habits-h">Keep a habit, watch the run grow</h2>
+  <div class="plate-notes plate-left">
+    <div class="note" data-for="star" tabindex="0" style="--top:0px"><h3>The star</h3><p>Fills from the centre as the day’s habits are kept.</p></div>
+    <div class="note" data-for="seal" tabindex="0" style="--top:78px"><h3>A seal of its own</h3><p>Drawn from the habit’s name, from a hundred drawings.</p></div>
+    <div class="note" data-for="run" tabindex="0" style="--top:170px"><h3>The last seven days</h3><p>Lapis where it was kept. The run shows from three.</p></div>
+  </div>
+  <div class="plate-panel pg" data-ui data-plate>
+    <div class="plate-star" data-part="star"><span data-star>{{star:20}}</span></div>
+    <div class="hs" data-strip>
+      <button type="button" class="hb is-kept" aria-pressed="true" data-run="9" data-part="seal"><span class="hb-seal">{{seal:sunrise}}</span>{{run:1111111:9}}<span class="hb-name">Morning athkar</span></button>
+      <button type="button" class="hb is-kept" aria-pressed="true" data-run="5"><span class="hb-seal">{{seal:quran}}</span>{{run:0111111:5}}<span class="hb-name">Revise wird</span></button>
+      <button type="button" class="hb is-kept" aria-pressed="true" data-week="1/3" data-ex><span class="hb-seal">{{seal:gym}}</span>{{run:0100001:1/3}}<span class="hb-name">Exercise</span></button>
+      <button type="button" class="hb" aria-pressed="false"><span class="hb-seal">{{seal:read}}</span>{{run:0010110}}<span class="hb-name">Read</span></button>
+      <button type="button" class="hb" aria-pressed="false"><span class="hb-seal">{{seal:sleep}}</span>{{run:0001000}}<span class="hb-name">Sleep early</span></button>
+    </div>
+    <div class="menu" role="group" aria-label="Exercise">
+      <p class="menu-record" data-part="record">Kept 12 · longest 4</p>
+      <button type="button" class="menu-item" data-act="keep">Not kept today</button>
+      <button type="button" class="menu-item" data-act="rest" data-part="rest">Rest all today</button>
+      <button type="button" class="menu-item" data-act="rhythm" data-part="rhythm">Repeat<span class="menu-val" data-rhythm>3 times a week</span></button>
+      <button type="button" class="menu-item" data-act="seal">Seal<span class="menu-val" data-seal-name>Dumbbell</span></button>
+    </div>
+    <template data-seal="gym">{{seal:gym}}</template><template data-seal="walk">{{seal:walk}}</template><template data-seal="swim">{{seal:swim}}</template><template data-seal="ball">{{seal:ball}}</template>
+  </div>
+  <div class="plate-notes plate-right">
+    <div class="note" data-for="record" tabindex="0" style="--top:252px"><h3>Its record</h3><p>Days kept and the longest run, at the top of its menu.</p></div>
+    <div class="note" data-for="rest" tabindex="0" style="--top:340px"><h3>Rest</h3><p>Rest a day, or until a date. The run waits for you.</p></div>
+    <div class="note" data-for="rhythm" tabindex="0" style="--top:428px"><h3>A rhythm</h3><p>Three times a week, or on set days. A day it isn’t due never breaks the run.</p></div>
+  </div>
+</section>

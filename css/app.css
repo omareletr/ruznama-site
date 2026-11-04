@@ -1,0 +1,141 @@
+/* Rūznāma's own look (RuznamaTheme): cream by day, black from Maghrib, ink on an opacity ladder,
+   lapis for progress and done, monospace tracked capitals for labels, Avenir Next for writing,
+   Gulzar for Arabic. The page's tokens and the app's fragments. */
+@font-face { font-family: "Gulzar"; src: url("../fonts/gulzar-subset.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Figtree"; src: url("../fonts/figtree-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Figtree"; src: url("../fonts/figtree-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Figtree"; src: url("../fonts/figtree-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+:root, .tone-sky, .tone-light, [data-sky="night"] .tone-flip {
+  --paper: #FAF5EA; --paper-2: #F1EADB; --paper-3: #E4DAC5; --ink-rgb: 8 5 3;
+  --accent: #2B47B5; --accent-up: #263E9C; --accent-rgb: 43 71 181; --stale: #B83A2E; --on-accent: #FAF5EA;
+}
+[data-sky="night"], [data-sky="night"] .tone-sky, .tone-dark, .tone-flip {
+  --paper: #0D0D0E; --paper-2: #18181B; --paper-3: #242428; --ink-rgb: 255 255 255;
+  --accent: #8FA3FF; --accent-up: #9FB0FF; --accent-rgb: 143 163 255; --stale: #FF6F61; --on-accent: #0D0D0E;
+}
+.tone-lapis { --paper: #2B47B5; --paper-2: #2B47B5; --ink-rgb: 250 245 234; --accent: #FAF5EA; --accent-up: #fff; --accent-rgb: 250 245 234; --stale: #FFB4AA; --on-accent: #2B47B5; }
+[data-sky="night"] .tone-lapis { --paper: #8FA3FF; --paper-2: #8FA3FF; --ink-rgb: 13 13 14; --accent: #0D0D0E; --accent-up: #000; --accent-rgb: 13 13 14; --stale: #8E1F15; --on-accent: #8FA3FF; }
+:root, [class*="tone-"] {
+  --ink: rgb(var(--ink-rgb)); --text: rgb(var(--ink-rgb) / .9); --soft: rgb(var(--ink-rgb) / .7);
+  --label: rgb(var(--ink-rgb) / .55); --faint: rgb(var(--ink-rgb) / .38); --box: rgb(var(--ink-rgb) / .3);
+  --unlit: rgb(var(--ink-rgb) / .2); --line: rgb(var(--ink-rgb) / .14); --accent-soft: rgb(var(--accent-rgb) / .7);
+}
+@media (prefers-contrast: more) { :root, [class*="tone-"] { --label: rgb(var(--ink-rgb) / .75); --faint: rgb(var(--ink-rgb) / .6); --box: rgb(var(--ink-rgb) / .5); } }
+@media (prefers-color-scheme: dark) { html:not([data-sky]) { --paper: #0D0D0E; --ink-rgb: 255 255 255; --accent: #8FA3FF; } }
+
+:root {
+  --sans: "Avenir Next", Avenir, "Figtree", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; /* taste-skill-ignore: the app's own label face, kept by choice */
+  --nastaliq: "Gulzar", "Noto Nastaliq Urdu", serif;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --spread: cubic-bezier(.5, 1, .89, 1);
+  --m: clamp(16px, 2.3vw, 32px);
+  --r: 16px;
+}
+
+/* Pixel marks: squares on whole cells, drawn in the ink they stand in. */
+.px { display: block; flex: none; fill: currentColor; shape-rendering: crispEdges; overflow: visible; }
+.px.star { width: 27px; height: 27px; color: var(--unlit); }
+.px.star rect { fill: var(--unlit); transition: fill 0s; }
+.px.star rect.on { fill: var(--accent); }
+.px.lantern { width: 10.5px; height: 10.5px; color: var(--accent); }
+.px.lens, .px.sliders { width: 20px; height: 20px; color: var(--faint); }
+.px.plus { width: 14px; height: 10px; color: var(--faint); }
+.px.arrow { width: 14px; height: 14px; color: var(--faint); }
+.px.repeat { display: inline-block; width: 12px; height: 9.3px; color: var(--faint); vertical-align: 1px; margin-left: 4px; }
+.px.mic { width: 11px; height: 16px; }
+
+/* The checkbox: outline, and the lapis that spreads from its centre with the tick cut out. */
+.bx { flex: none; width: 16px; height: 16px; padding: 0; border: 0; background: none; position: relative; color: var(--box); cursor: default; }
+button.bx { cursor: pointer; }
+button.bx::after { content: ""; position: absolute; inset: -10px; }
+.bx-m { position: relative; display: block; width: 16px; height: 16px; }
+.bx-m .px { position: absolute; inset: 0; width: 16px; height: 16px; }
+.bx-open rect { fill: var(--box); }
+.bx-done rect { fill: var(--accent); opacity: 0; transition: opacity 0s linear var(--r); }
+.is-done .bx-done rect { opacity: 1; transition-delay: var(--d); }
+button.bx:hover .bx-open rect { fill: rgb(var(--ink-rgb) / .45); }
+button.bx:active .bx-m { transform: scale(.88); }
+.bx-m { transition: transform .1s var(--ease); }
+
+/* A habit's seal, lit from the centre in 0.4s (PixelStar.spread), and its last seven days. */
+.seal rect { fill: var(--unlit); transition: fill 0s linear var(--r); }
+.is-kept .seal rect { fill: var(--accent); transition-delay: var(--d); }
+.is-rest .seal rect { fill: rgb(var(--ink-rgb) / .1); }
+.run { display: flex; align-items: center; gap: 1px; height: 8px; margin-top: 7px; }
+.run i { width: 4px; height: 4px; background: var(--unlit); }
+.run i.k { background: var(--accent); }
+.run b { font: 500 10px/1 var(--mono); color: var(--accent); margin-left: 4px; letter-spacing: .08em; }
+.no-anim *, .no-anim *::before, .no-anim *::after { transition: none !important; }
+
+/* The page: one fragment of the app at its true size. */
+.pg { background: var(--paper); color: var(--text); font: 400 16px/1.35 var(--sans); padding: 20px 22px 28px; text-align: left; }
+.pg-top { display: flex; justify-content: space-between; align-items: center; height: 28px; }
+.pg-tools { display: flex; align-items: center; gap: 22px; }
+.pg-today { display: flex; align-items: center; gap: 8px; font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+.pg-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 30px; }
+.pg-date, .mini-date { font: 400 12px/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; color: var(--soft); white-space: nowrap; }
+.pg-hijri { font: 400 16px/1 var(--nastaliq); color: var(--text); white-space: nowrap; }
+.pg-count { margin: 26px 0 0; font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+.pg-sec { margin-top: 30px; }
+.pg-sh { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; font: 500 11px/1 var(--mono); letter-spacing: .145em; text-transform: uppercase; color: var(--label); }
+.pg-sh .pg-hijri { font-size: 13px; letter-spacing: 0; text-transform: none; color: var(--soft); }
+.pg-tally { color: var(--faint); letter-spacing: .1em; font-size: 10px; }
+.pg-tally.is-accent { color: var(--accent); }
+.ln { display: flex; align-items: center; gap: 13px; min-height: 34px; position: relative; }
+.lt { flex: 0 1 auto; min-width: 0; color: var(--text); position: relative; transition: color .25s var(--ease); }
+.lt::after { content: ""; position: absolute; left: 0; right: 0; top: 55%; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .25s var(--ease); } /* taste-skill-ignore: the app's strike and prayer line, inside data-ui fragments */
+.is-done .lt { color: var(--faint); }
+.is-done .lt::after { transform: scaleX(1); }
+.mg { flex: none; margin-left: auto; min-width: 30px; text-align: right; font: 500 10.5px/1 var(--mono); letter-spacing: .1em; color: var(--faint); }
+.is-done .mg { color: var(--accent); }
+.mg.is-new { animation: slide-in .25s var(--ease) both; }
+@keyframes slide-in { from { opacity: 0; transform: translateX(6px); } }
+.is-stale .lt, .is-stale .mg { color: var(--stale); }
+.is-later .bx { opacity: .55; }
+.is-gone { display: none; }
+
+/* The habit strip. */
+.hs { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 26px; }
+.hb { display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: default; }
+button.hb { cursor: pointer; }
+.hb-seal .px.seal { width: 44px; height: 44px; }
+.hb-name { margin-top: 9px; font: 500 10px/1.25 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint); text-align: center; max-width: 9ch; }
+.is-kept .hb-name { color: var(--soft); }
+button.hb:hover .seal rect { fill: rgb(var(--ink-rgb) / .32); }
+button.hb.is-kept:hover .seal rect { fill: var(--accent-up); }
+button.hb:active .hb-seal { transform: scale(.92); }
+.hb-seal { transition: transform .12s var(--ease); }
+.is-ahead .hb { opacity: 1; }
+
+/* The prayer line, built by landing.js from the visitor's times. */
+.pl { position: relative; margin-top: 26px; height: 52px; font: 500 10px/1 var(--mono); letter-spacing: .12em; }
+.pl-track { position: absolute; left: 0; right: 0; top: 0; height: 11px; }
+.pl-base, .pl-fill { position: absolute; left: 2.5px; top: 5px; height: 1px; } /* taste-skill-ignore: the app's strike and prayer line, inside data-ui fragments */
+.pl-base { right: 0; background: var(--line); }
+.pl-fill { background: var(--accent); width: 0; transform-origin: left; }
+.pl-dot { position: absolute; top: 3px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--paper); box-shadow: inset 0 0 0 1px rgb(var(--ink-rgb) / .25); } /* taste-skill-ignore: the app's strike and prayer line, inside data-ui fragments */
+.pl-dot.is-begun { background: var(--accent); box-shadow: none; } /* taste-skill-ignore: the app's strike and prayer line, inside data-ui fragments */
+.pl-sun { position: absolute; top: 3px; width: 1px; height: 5px; background: rgb(var(--ink-rgb) / .25); }
+.pl-sun.is-begun { background: var(--accent); }
+.pl-lantern { position: absolute; top: .25px; margin-left: -7.25px; padding: 0 2px; background: var(--paper); }
+.pl-row { position: absolute; left: 0; right: 0; height: 12px; }
+.pl-row span { position: absolute; top: 0; white-space: nowrap; color: var(--faint); }
+.pl-row span.is-past { color: var(--accent-soft); }
+.pl-row span.is-now { color: var(--accent); }
+.pl-initials { top: 22px; }
+.pl-times { top: 39px; }
+.pl.is-hidden { display: none; }
+
+/* صح: inks in from the right under the last line when everything on Today is ticked. */
+.sahh { margin: 6px 0 0; text-align: right; font: 400 34px/1.2 var(--nastaliq); color: var(--accent); clip-path: inset(0 0 0 100%); transition: clip-path .42s var(--ease); }
+.is-all-done .sahh { clip-path: inset(0 0 0 0); }
+
+/* The pixel switch: off in ink, on in lapis, crossfaded (PixelSwitch). */
+.sw { position: relative; display: block; width: 26px; height: 14px; }
+.sw .px { position: absolute; inset: 0; width: 26px; height: 14px; transition: opacity .25s var(--ease); }
+.sw-off { color: var(--box); }
+.sw-on { color: var(--accent); opacity: 0; }
+[aria-checked="true"] .sw-on { opacity: 1; }
+[aria-checked="true"] .sw-off { opacity: 0; }

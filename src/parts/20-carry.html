@@ -1,0 +1,41 @@
+<section class="fields" id="carry" aria-labelledby="carry-h">
+  <div class="field f1 tone-sky">
+    <h2 class="field-h" id="carry-h">Tasks carry over</h2>
+    <div class="mini" data-ui>
+      <span class="mini-date" data-date="-9">Monday, 26 October</span>
+      <div class="pg-sh"><span>Personal</span></div>
+      <div class="ln"><span class="bx">{{box}}</span><span class="lt">Book a dentist cleaning</span><span class="mg"></span></div>
+    </div>
+    <p class="clause">First, you write it down.</p>
+  </div>
+  <div class="field f2 tone-sky">
+    <div class="mini" data-ui>
+      <span class="mini-date" data-date="-7">Wednesday, 28 October</span>
+      <div class="pg-sh"><span>Personal</span></div>
+      <div class="ln"><span class="bx">{{box}}</span><span class="lt">Book a dentist cleaning</span><span class="mg tick">+2</span></div>
+    </div>
+    <p class="clause">Not done by 4am? It carries over, counting the days.</p>
+  </div>
+  <div class="field f3 tone-flip">
+    <div class="mini" data-ui>
+      <span class="mini-date" data-date="-1">Tuesday, 3 November</span>
+      <div class="pg-sh"><span>Personal</span></div>
+      <div class="ln is-stale"><span class="bx">{{box}}</span><span class="lt">Book a dentist cleaning</span><span class="mg tick">+8</span></div>
+      <span class="stale-note">Some day</span>
+    </div>
+    <p class="clause">Past a week it turns red and offers Some day.</p>
+  </div>
+  <div class="field f4 tone-lapis">
+    <div class="mini" data-ui>
+      <span class="mini-date" data-date="0">Wednesday, 4 November</span>
+      <div class="pg-sh"><span>Personal</span></div>
+      <div class="ln is-done" data-autocheck><span class="bx">{{box}}</span><span class="lt">Book a dentist cleaning</span><span class="mg">09:12</span></div>
+    </div>
+    <p class="clause">Done, it stays till 4am, then goes to History.</p>
+  </div>
+</section>
+
+<section class="reveal" aria-labelledby="reveal-h">
+  <h2 class="reveal-h" id="reveal-h" data-words>What’s left today<br> waits for tomorrow.</h2>
+  <p class="reveal-sub">The day turns over at 4am by itself. Open tasks stay on Today, counting the days, and done ones move to History. Nothing to copy, nothing to tidy.</p>
+</section>

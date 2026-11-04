@@ -1,0 +1,52 @@
+<section class="hero" id="top" aria-labelledby="hero-h">
+  <div class="hero-stage">
+    <h1 id="hero-h" class="hero-h"><span class="hero-a">A daily journal</span> <span class="hero-b">for your to-dos.</span></h1>
+
+    <div class="reel" aria-label="Pages of the journal: yesterday, today, tomorrow and the days ahead">
+      <div class="reel-strip">
+
+        <article class="pg frame" data-ui data-page="yesterday" aria-label="Yesterday's page">
+          <div class="pg-top">{{star:33}}<span class="pg-tools">{{px:lens}}<span class="pg-today">Today {{px:arrow}}</span></span></div>
+          <div class="pg-head"><span class="pg-date" data-date="-1">Monday, 2 November</span><span class="pg-hijri" data-hijri="-1" lang="ar" dir="rtl">٢٢ جمادى الأولى ١٤٤٨</span></div>
+          <p class="pg-count">5 done</p>
+          <div class="hs">
+            <div class="hb is-kept"><span class="hb-seal">{{seal:sunrise}}</span><span class="hb-name">Morning athkar</span></div>
+            <div class="hb is-kept"><span class="hb-seal">{{seal:quran}}</span><span class="hb-name">Revise wird</span></div>
+            <div class="hb is-kept"><span class="hb-seal">{{seal:read}}</span><span class="hb-name">Read</span></div>
+            <div class="hb"><span class="hb-seal">{{seal:gym}}</span><span class="hb-name">Exercise</span></div>
+            <div class="hb"><span class="hb-seal">{{seal:sleep}}</span><span class="hb-name">Sleep early</span></div>
+          </div>
+          <div class="pg-sec"><div class="pg-sh"><span>Faith</span></div>
+            <div class="ln is-done"><span class="bx">{{box}}</span><span class="lt">Pray Duha</span><span class="mg">08:30</span></div></div>
+          <div class="pg-sec"><div class="pg-sh"><span>Work</span></div>
+            <div class="ln is-done"><span class="bx">{{box}}</span><span class="lt">Send the slides to Hana</span><span class="mg">11:40</span></div>
+            <div class="ln is-done"><span class="bx">{{box}}</span><span class="lt">Reply to the landlord</span><span class="mg">14:05</span></div></div>
+          <div class="pg-sec"><div class="pg-sh"><span>People</span></div>
+            <div class="ln is-done"><span class="bx">{{box}}</span><span class="lt">Video call with the cousins</span><span class="mg">20:15</span></div></div>
+        </article>
+
+        <article class="pg frame is-today" data-ui data-page="today" aria-label="Today's page, which you can check off">
+          <div class="pg-top"><span class="pg-star" data-star>{{star:20}}</span><span class="pg-tools">{{px:lens}}{{px:sliders}}</span></div>
+          <div class="pg-head"><span class="pg-date" data-date="0">Tuesday, 3 November</span><span class="pg-hijri" data-hijri="0" lang="ar" dir="rtl">٢٣ جمادى الأولى ١٤٤٨</span></div>
+          <div class="pl" data-pl role="img" aria-label="Prayer line"></div>
+          <div class="hs" data-strip>
+            <button type="button" class="hb is-kept" aria-pressed="true" data-run="9"><span class="hb-seal">{{seal:sunrise}}</span>{{run:1111111:9}}<span class="hb-name">Morning athkar</span></button>
+            <button type="button" class="hb is-kept" aria-pressed="true" data-run="5"><span class="hb-seal">{{seal:quran}}</span>{{run:0111111:5}}<span class="hb-name">Revise wird</span></button>
+            <button type="button" class="hb is-kept" aria-pressed="true" data-week="1/3"><span class="hb-seal">{{seal:gym}}</span>{{run:0100001:1/3}}<span class="hb-name">Exercise</span></button>
+            <button type="button" class="hb" aria-pressed="false"><span class="hb-seal">{{seal:read}}</span>{{run:0010110}}<span class="hb-name">Read</span></button>
+            <button type="button" class="hb" aria-pressed="false"><span class="hb-seal">{{seal:sleep}}</span>{{run:0001000}}<span class="hb-name">Sleep early</span></button>
+          </div>
+          <div class="pg-sec" data-sec><div class="pg-sh"><span>Inbox</span><span class="pg-tally">0/2</span></div>
+            <div class="ln" data-line="desk"><button type="button" class="bx" aria-pressed="false">{{box}}</button><span class="lt">Look into a standing desk</span><span class="mg"></span></div>
+            <div class="ln" data-line="bilal"><button type="button" class="bx" aria-pressed="false">{{box}}</button><span class="lt">Ask Bilal about the Saturday football</span><span class="mg"></span></div></div>
+          <div class="pg-sec" data-sec><div class="pg-sh"><span>Faith</span><span class="pg-tally">1/3</span></div>
+            <div class="ln is-done" data-line="sadaqah"><button type="button" class="bx" aria-pressed="true">{{box}}</button><span class="lt">Give the monthly sadaqah {{px:repeat}}</span><span class="mg">07:40</span></div>
+            <div class="ln" data-line="mulk"><button type="button" class="bx" aria-pressed="false">{{box}}</button><span class="lt">Memorise the last ten ayat of al‑Mulk</span><span class="mg" data-carried="3">+3</span></div>
+            <div class="ln" data-line="halaqa"><button type="button" class="bx" aria-pressed="false">{{box}}</button><span class="lt">Listen to this week’s halaqa {{px:repeat}}</span><span class="mg"></span></div></div>
+          <div class="pg-sec" data-sec><div class="pg-sh"><span>Personal</span><span class="pg-tally">2/4</span></div>
+            <div class="ln is-done" data-line="gym"><button type="button" class="bx" aria-pressed="true">{{box}}</button><span class="lt">Gym: legs</span><span class="mg">07:05</span></div>
+            <div class="ln" data-line="dentist"><button type="button" class="bx" aria-pressed="false">{{box}}</button><span class="lt">Book a dentist cleaning</span><span class="mg" data-carried="6">+6</span></div>
+            <div class="ln is-done" data-line="arabic"><button type="button" class="bx" aria-pressed="true">{{box}}</button><span class="lt">Practise Arabic for fifteen minutes</span><span class="mg">07:31</span></div>
+            <div class="ln" data-line="chapter"><button type="button" class="bx" aria-pressed="false">{{box}}</button><span class="lt">Finish chapter 4 of the book</span><span class="mg"></span></div></div>
+          <p class="sahh" lang="ar" aria-hidden="true">صح</p>
+        </article>

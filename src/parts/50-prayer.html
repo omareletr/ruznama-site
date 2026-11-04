@@ -1,0 +1,46 @@
+<section class="prayer" id="prayer" aria-labelledby="prayer-h">
+  <div class="prayer-lead">
+    <h2 id="prayer-h">Plan the day around the prayers</h2>
+    <p>The prayer line runs from Fajr to Isha with a lantern at now. The Hijri date faces the date, and the page turns black at Maghrib and cream again at Fajr.</p>
+  </div>
+
+  <div class="demo" data-ui data-demo>
+    <div class="demo-page pg tone-light" data-demo-page>
+      <p class="demo-clock" data-demo-clock>09:41</p>
+      <div class="pg-head"><span class="pg-date" data-date="0">Tuesday, 3 November</span><span class="pg-hijri" data-demo-hijri lang="ar" dir="rtl">٢٣ جمادى الأولى ١٤٤٨</span></div>
+      <div class="pl" data-pl data-demo-line role="img" aria-label="Prayer line"></div>
+      <div class="pg-sec"><div class="pg-sh"><span>Faith</span><span class="pg-tally" data-demo-tally>1/3</span></div>
+        <div class="ln is-done"><span class="bx">{{box}}</span><span class="lt">Give the monthly sadaqah {{px:repeat}}</span><span class="mg">07:40</span></div>
+        <div class="ln"><span class="bx">{{box}}</span><span class="lt">Memorise the last ten ayat of al‑Mulk</span><span class="mg" data-demo-carried>+3</span></div>
+        <div class="ln"><span class="bx">{{box}}</span><span class="lt">Listen to this week’s halaqa {{px:repeat}}</span><span class="mg"></span></div></div>
+      <div class="pg-sec"><div class="pg-sh"><span>Personal</span><span class="pg-tally">1/3</span></div>
+        <div class="ln is-done"><span class="bx">{{box}}</span><span class="lt">Gym: legs</span><span class="mg">07:05</span></div>
+        <div class="ln"><span class="bx">{{box}}</span><span class="lt">Book a dentist cleaning</span><span class="mg" data-demo-carried>+6</span></div>
+        <div class="ln"><span class="bx">{{box}}</span><span class="lt">Finish chapter 4 of the book</span><span class="mg"></span></div></div>
+    </div>
+    <div class="demo-controls" role="group" aria-label="Settings for the page">
+      <label class="ctl ctl-time"><span class="ctl-name">Time of day</span><span class="ctl-val" data-time-val>09:41</span>
+        <input type="range" min="0" max="1439" step="1" value="581" data-time aria-label="Time of day"></label>
+      <div class="ctl"><span class="ctl-name">Page colour</span>
+        <span class="seg" role="radiogroup" aria-label="Page colour">
+          <button type="button" role="radio" aria-checked="true" data-colour="prayer">Prayer times</button><button type="button" role="radio" aria-checked="false" data-colour="day">Day</button><button type="button" role="radio" aria-checked="false" data-colour="night">Night</button></span></div>
+      <div class="ctl"><span class="ctl-name">Prayer line</span><button type="button" role="switch" aria-checked="true" aria-label="Prayer line" data-toggle="line">{{switch}}</button></div>
+      <div class="ctl"><span class="ctl-name">Hijri date</span><button type="button" role="switch" aria-checked="true" aria-label="Hijri date" data-toggle="hijri">{{switch}}</button></div>
+      <div class="ctl"><span class="ctl-name">Section tallies</span><button type="button" role="switch" aria-checked="true" aria-label="Section tallies" data-toggle="tally">{{switch}}</button></div>
+      <div class="ctl"><span class="ctl-name">Days carried</span><button type="button" role="switch" aria-checked="true" aria-label="Days carried" data-toggle="carried">{{switch}}</button></div>
+      <div class="ctl"><span class="ctl-name">Clock</span>
+        <span class="seg" role="radiogroup" aria-label="Clock">
+          <button type="button" role="radio" aria-checked="true" data-clock="24">24-hour</button><button type="button" role="radio" aria-checked="false" data-clock="12">12-hour</button></span></div>
+    </div>
+  </div>
+  <p class="demo-hint">Slide the time past Maghrib.</p>
+
+  <div class="moment">
+    <figure class="moment-pic"><img src="media/phone/07-moment.webp" width="780" height="1694" loading="lazy" alt="The prayer moment: Asr in 15 minutes, with I’ve prayed already, I’m going to pray now and Remind me in 5 minutes"></figure>
+    <div class="moment-text">
+      <h3>A quiet page before each prayer</h3>
+      <p>Five to thirty minutes before a prayer, what’s on screen blurs and one page takes over: Asr in 15 minutes. Answer with I’ve prayed already, I’m going to pray now, or Remind me in 5 minutes.</p>
+      <p>It comes only while the app is open, never as a notification, and never during a call or while your screen is shared. Answered on one device, it clears on the rest.</p>
+    </div>
+  </div>
+</section>
