@@ -8,7 +8,7 @@
   var doc = document;
   var $ = function (s, r) { return (r || doc).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || doc).querySelectorAll(s)); };
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&]motion=0/.test(location.search);
 
   // Clock: follow the visitor's system, as the app's Follow System does; 12-hour has no AM or PM.
   var twelve = false;
@@ -44,6 +44,7 @@
 
   // Dates on every page, counted from the visitor's Today.
   $$('[data-date]').forEach(function (el) { el.textContent = pageDate(add(today, +el.getAttribute('data-date'))); });
+  $$('[data-weekday]').forEach(function (el) { el.textContent = dayName.format(add(today, +el.getAttribute('data-weekday'))); });
   $$('[data-hijri]').forEach(function (el) {
     var n = +el.getAttribute('data-hijri');
     // Today's Hijri date steps on at Maghrib; past pages and Tomorrow keep their own.
@@ -56,8 +57,8 @@
 
   var note = $('[data-place]');
   if (note) note.textContent = RZ.zone
-    ? 'Today’s page, set to your day: prayer times for ' + RZ.zone[2] + ', from your time zone. Tick a task.'
-    : 'Today’s page, set to your day. Tick a task.';
+    ? 'This is today’s page, with the prayer times for ' + RZ.zone[2] + ', guessed from your time zone. Try ticking something off.'
+    : 'This is today’s page, with today’s date. Try ticking something off.';
 
   // The prayer line (PrayerLine, PrayerLineScale): Fajr to Isha over 88% of its length, the night after.
   var ORDER = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
@@ -297,6 +298,94 @@
     }); });
     render();
     RZ.demo = { set: function (m) { state.minutes = m; range.value = m; render(); }, minutes: function () { return state.minutes; } };
+  }
+
+  // Once something has been seen: for the nudges, which wait until a part is on screen.
+  function whenSeen(el, fn) {
+    if (!el) return;
+    if (!('IntersectionObserver' in window)) { fn(); return; }
+    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); fn(); } }, { threshold: 0.6 });
+    io.observe(el);
+  }
+
+  // The habits panel asks for a tap: a lapis ring pulses out from the first seal not yet kept,
+  // as a tap-here hint does, only while the panel is on screen and until the strip is first tapped.
+  // With Reduce Motion the ring stands still.
+  if (plate) {
+    var hStrip = $('[data-strip]', plate), hTarget = $('.hb:not(.is-kept)', hStrip), tapped = false, first = true;
+    if (hTarget) {
+      hStrip.addEventListener('click', function () { tapped = true; hTarget.classList.remove('is-calling'); });
+      var call = function (on) {
+        if (tapped) return;
+        if (on && first) { first = false; setTimeout(function () { if (!tapped) hTarget.classList.add('is-calling'); }, 1800); return; }
+        hTarget.classList.toggle('is-calling', on);
+      };
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { call(es[0].isIntersecting); }, { threshold: 0.5 }).observe(plate);
+      else call(true);
+    }
+  }
+
+  // The time slider: lapis up to the handle, the day's prayers marked under it, and until it's
+  // touched, a faint lantern that leaves the handle and glides on past Maghrib, where the page turns.
+  if (demo) {
+    var slider = $('[data-time]', demo), marks = $('[data-time-marks]', demo), ghost = $('[data-time-ghost]', demo);
+    var THUMB = 24, touched = false, glides = 0, gTimer = null;
+    var at = function (m) { return THUMB / 2 + (m / 1439) * (slider.offsetWidth - THUMB); };
+    var follow = function () { slider.style.setProperty('--p', (at(+slider.value) / slider.offsetWidth * 100).toFixed(2) + '%'); };
+    var base0 = RZ.startOfDay(RZ.now), t0 = RZ.timesFor(base0);
+    var minute = function (k) { return (t0[k] - base0) / 60000; };
+    var drawMarks = function () {
+      if (!marks) return;
+      marks.replaceChildren.apply(marks, ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].map(function (k) {
+        var s = doc.createElement('span');
+        s.textContent = k.charAt(0).toUpperCase(); s.style.left = at(minute(k)) + 'px'; return s;
+      }));
+    };
+    var stop = function () { touched = true; clearTimeout(gTimer); };
+    slider.addEventListener('input', follow);
+    slider.addEventListener('pointerdown', stop);
+    slider.addEventListener('keydown', stop);
+    var glide = function () {
+      if (touched || glides++ >= 3 || !ghost || !ghost.animate) return;
+      var now = +slider.value, to = now < minute('maghrib') ? minute('maghrib') + 25 : minute('fajr');
+      ghost.animate([
+        { transform: 'translateX(' + at(now) + 'px)', opacity: 0 },
+        { opacity: 0.75, offset: 0.12 },
+        { opacity: 0.75, offset: 0.78 },
+        { transform: 'translateX(' + at(to) + 'px)', opacity: 0 }
+      ], { duration: 1700, easing: 'cubic-bezier(.65, 0, .35, 1)' });
+      gTimer = setTimeout(glide, 5200);
+    };
+    drawMarks(); follow();
+    window.addEventListener('resize', function () { drawMarks(); follow(); });
+    var setDemo = RZ.demo.set;
+    RZ.demo.set = function (m) { setDemo(m); follow(); };
+    whenSeen(demo, function () { if (!reduce) gTimer = setTimeout(glide, 2600); });
+  }
+
+  // The prayer moment, drawn: it names the next prayer, and any answer closes it, as in the app.
+  var moment = $('[data-moment]');
+  if (moment) {
+    // As the app has it (PrayerMoment): the prayer whose time is running out, and what ends it.
+    var T = RZ.todayTimes, nowT = +RZ.now, prayer, end;
+    var ramadan = false;
+    try { ramadan = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { month: 'numeric' }).format(RZ.now) === '9'; } catch (e) {}
+    if (nowT >= +T.fajr && nowT < +T.sunrise) { prayer = 'Fajr'; end = 'Sunrise'; }
+    else if (nowT < +T.asr && nowT >= +T.sunrise) { prayer = 'Dhuhr'; end = 'Asr'; }
+    else if (nowT >= +T.asr && nowT < +T.maghrib) { prayer = 'Asr'; end = ramadan ? 'Iftar' : 'Maghrib'; }
+    else if (nowT >= +T.maghrib && nowT < +T.isha) { prayer = 'Maghrib'; end = 'Isha'; }
+    else { prayer = 'Isha'; end = 'Fajr'; }
+    $('[data-moment-title]', moment).textContent = end + ' in 15 minutes';
+    $('[data-prayed]', moment).textContent = 'I’ve prayed ' + prayer + ' already';
+    $('[data-praying]', moment).textContent = 'I’m going to pray ' + prayer + ' now';
+    var mTimer = null;
+    $$('[data-moment-act]', moment).forEach(function (b) {
+      b.addEventListener('click', function () {
+        moment.classList.add('is-answered');
+        clearTimeout(mTimer);
+        mTimer = setTimeout(function () { moment.classList.remove('is-answered'); }, 3200);
+      });
+    });
   }
 
   // The first page: write a task and it lands as a line; the Bismillah goes at the first letter.

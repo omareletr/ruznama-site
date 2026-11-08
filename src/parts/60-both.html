@@ -1,43 +1,54 @@
 <section class="both" id="both" aria-labelledby="both-h">
   <div class="both-lead">
-    <h2 id="both-h">The same pages on iPhone and Mac</h2>
-    <p>Your list syncs through your own iCloud, so a task checked on one is checked on the other.</p>
+    <h2 id="both-h">Same pages on iPhone and Mac</h2>
+    <p>Tick something off on your phone and it’s ticked on your Mac a moment later. It all goes through your own iCloud, so there’s nothing to sign up for.</p>
   </div>
   <div class="both-pics">
-    <figure class="both-mac">
-      <img class="sky-day" src="media/mac/today-day.webp" width="2000" height="1387" loading="lazy" alt="Rūznāma on a Mac: Wednesday's page with prayer times, habit seals and three sections">
-      <img class="sky-night" src="media/mac/today-night.webp" width="2000" height="1387" loading="lazy" alt="Rūznāma on a Mac at night: the same page on black">
+    <figure class="mac" data-ui>
+      <div class="mac-lid">
+        <div class="mac-screen"><div class="mac-display">
+          <img class="sky-day" src="media/mac/today-day.webp" width="2000" height="1387" loading="lazy" alt="Rūznāma on a Mac: Wednesday's page with prayer times, habit seals and three sections">
+          <img class="sky-night" src="media/mac/today-night.webp" width="2000" height="1387" loading="lazy" alt="Rūznāma on a Mac at night: the same page on black">
+        </div><span class="mac-notch"></span></div>
+        <div class="mac-back"></div>
+      </div>
+      <div class="mac-base"></div>
     </figure>
-    <figure class="both-phone">
-      <img class="sky-day" src="media/phone/01-today.webp" width="780" height="1694" loading="lazy" alt="Rūznāma on an iPhone: Today's page">
-      <img class="sky-night" src="media/phone/05-night.webp" width="780" height="1694" loading="lazy" alt="Rūznāma on an iPhone at night">
+    <figure class="iphone" data-ui>
+      <div class="iphone-screen">
+        <img class="sky-day" src="media/phone/01-today.webp" width="780" height="1694" loading="lazy" alt="Rūznāma on an iPhone: Today's page">
+        <img class="sky-night" src="media/phone/05-night.webp" width="780" height="1694" loading="lazy" alt="Rūznāma on an iPhone at night">
+        <span class="iphone-island"></span>
+      </div>
     </figure>
   </div>
   <div class="both-lists">
-    <div>
-      <h3>On iPhone</h3>
+    <div class="both-col">
+      <h3>{{px:phone}}On iPhone</h3>
       <ul>
-        <li>Widgets for the Home Screen and Lock Screen: the prayer line, and seals you can tap to keep</li>
+        <li>Widgets for the Lock Screen and Home Screen: the prayer line, and seals you tap to keep</li>
         <li>Add a task with Siri, Shortcuts, Control Center or the Action button</li>
-        <li>Share a link from Safari straight into your Inbox</li>
+        <li>Share a link from Safari and it lands in your Inbox</li>
       </ul>
+      {{store:phone}}
     </div>
-    <div>
-      <h3>On Mac</h3>
+    <div class="both-col">
+      <h3>{{px:mac}}On Mac</h3>
       <ul>
         <li>The star in the menu bar, opening on today’s prayer times</li>
-        <li>Quick capture from any app, on keys you choose</li>
-        <li>A key for everything: ⌘N to write, ⌘F to find, ⌘[ and ⌘] between days</li>
+        <li>Add a task from any app, on keys you choose</li>
+        <li>A key for nearly everything: ⌘N to write, ⌘F to find, ⌘[ and ⌘] between days</li>
       </ul>
+      {{store:mac}}
     </div>
   </div>
 </section>
 
 <section class="private tone-flip" id="private" aria-labelledby="private-h">
-  <h2 id="private-h">No account,<br> no tracking.</h2>
+  <h2 id="private-h">In your iCloud,<br> not on my server.</h2>
   <div class="private-text">
-    <p>Just your iCloud. There’s no sign up, no ads, no analytics and no server of mine: your pages stay on your devices and sync through your private iCloud.</p>
-    <p>Prayer times, your voice and the sorting are all worked out on the device. Turn off iCloud and it all still works.</p>
+    <p>There’s no account to make, and no ads or analytics. Your pages sync through your private iCloud, which I can’t see into.</p>
+    <p>Prayer times, voice and sorting are all worked out on your device. Turn iCloud off and everything still works, just on that one device.</p>
     <a class="link" href="privacy/">Read the privacy policy</a>
   </div>
 </section>

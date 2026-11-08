@@ -1,7 +1,7 @@
 // Builds ../index.html from src/parts/*.html: expands {{…}} tokens into the app's own pixel marks,
 // drawn from the same grids as RuznamaUI (Theme.swift, PixelLens, PixelMic, HabitSeal+Drawings).
 // Run: node store/site/src/build.mjs
-import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -18,6 +18,8 @@ const MARKS = {
   repeat: { rows: ['......#..', '.#######.', '#.....#..', '#.......#', '..#.....#', '.#######.', '..#......'], gap: 0 },
   arrow: { rows: ['...#...', '....#..', '.....#.', '#######', '.....#.', '....#..', '...#...'], gap: 0 },
   chevron: { rows: ['#....', '.#...', '..#..', '.#...', '#....'], gap: 0 },
+  phone: { rows: ['.####.', '#....#', '#....#', '#....#', '#....#', '#....#', '#....#', '#.##.#', '.####.'], gap: 0 },
+  mac: { rows: ['.#########.', '.#.......#.', '.#.......#.', '.#.......#.', '.#.......#.', '.#########.', '###########'], gap: 0 },
   boxOpen: { rows: ['.######.', '#......#', '#......#', '#......#', '#......#', '#......#', '#......#', '.######.'], gap: 0 },
 };
 const BOX_DONE = ['.######.', '########', '######.#', '#.###.##', '##.#.###', '###.####', '########', '.######.'];
@@ -111,11 +113,19 @@ function run(pattern, figure) {
   return `<span class="run" aria-hidden="true">${squares}${figure ? `<b>${figure}</b>` : ''}</span>`;
 }
 
+// The two ways to the App Store, one record for both (universal purchase), each its own button.
+const STORE = 'https://apps.apple.com/app/id6829597800';
+function store(which) {
+  const name = which === 'mac' ? 'Mac' : 'iPhone';
+  const href = `${STORE}?platform=${which === 'mac' ? 'mac' : 'iphone'}`;
+  return `<a class="store store-${which}" href="${href}" aria-label="Download for ${name} on the App Store">${svg(MARKS[which].rows, 0, which)}<span class="store-t"><small>Download for</small>${name}</span></a>`;
+}
+
 // The page is written in parts (src/parts, in name order) and joined here.
 const partsDir = join(here, 'parts');
 const src = readdirSync(partsDir).filter((f) => f.endsWith('.html')).sort()
   .map((f) => readFileSync(join(partsDir, f), 'utf8')).join('\n');
-const html = src.replace(/\{\{(\w+)(?::([^:}]*))?(?::([^}]*))?\}\}/g, (_, kind, a, b) => {
+const expand = (text) => text.replace(/\{\{(\w+)(?::([^:}]*))?(?::([^}]*))?\}\}/g, (_, kind, a, b) => {
   switch (kind) {
     case 'px': return svg(MARKS[a].rows, MARKS[a].gap, a);
     case 'star': return star(Number(a));
@@ -123,11 +133,25 @@ const html = src.replace(/\{\{(\w+)(?::([^:}]*))?(?::([^}]*))?\}\}/g, (_, kind, 
     case 'box': return box();
     case 'run': return run(a, b);
     case 'switch': return switchMark();
+    case 'store': return store(a);
+    case 'stores': return `<div class="stores">${store('phone')}${store('mac')}</div>`;
     default: throw new Error(`Unknown token ${kind}`);
   }
 });
+const html = expand(src);
 // Each stylesheet and script carries a version, so a new build is never served from cache.
 const version = Date.now().toString(36);
 const stamped = html.replace(/(href|src)="((?:css|js)\/[\w.-]+\.(?:css|js)|sky\.js)"/g, `$1="$2?v=${version}"`);
 writeFileSync(join(here, '..', 'index.html'), stamped);
 console.log(`index.html: ${(html.length / 1024).toFixed(1)} KB`);
+
+// Mocks for choosing between options (src/mocks), built the same way into mocks/. Not published.
+const mocksDir = join(here, 'mocks');
+if (existsSync(mocksDir)) {
+  const out = join(here, '..', 'mocks');
+  mkdirSync(out, { recursive: true });
+  for (const f of readdirSync(mocksDir).filter((n) => n.endsWith('.html'))) {
+    writeFileSync(join(out, f), expand(readFileSync(join(mocksDir, f), 'utf8')));
+    console.log(`mocks/${f}`);
+  }
+}

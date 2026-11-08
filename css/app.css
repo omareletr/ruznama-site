@@ -7,11 +7,11 @@
 @font-face { font-family: "Figtree"; src: url("../fonts/figtree-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
 
 :root, .tone-sky, .tone-light, [data-sky="night"] .tone-flip {
-  --paper: #FAF5EA; --paper-2: #F1EADB; --paper-3: #E4DAC5; --ink-rgb: 8 5 3;
+  --paper: #FAF5EA; --paper-rgb: 250 245 234; --paper-2: #F1EADB; --paper-3: #E4DAC5; --ink-rgb: 8 5 3;
   --accent: #2B47B5; --accent-up: #263E9C; --accent-rgb: 43 71 181; --stale: #B83A2E; --on-accent: #FAF5EA;
 }
 [data-sky="night"], [data-sky="night"] .tone-sky, .tone-dark, .tone-flip {
-  --paper: #0D0D0E; --paper-2: #18181B; --paper-3: #242428; --ink-rgb: 255 255 255;
+  --paper: #0D0D0E; --paper-rgb: 13 13 14; --paper-2: #18181B; --paper-3: #242428; --ink-rgb: 255 255 255;
   --accent: #8FA3FF; --accent-up: #9FB0FF; --accent-rgb: 143 163 255; --stale: #FF6F61; --on-accent: #0D0D0E;
 }
 .tone-lapis { --paper: #2B47B5; --paper-2: #2B47B5; --ink-rgb: 250 245 234; --accent: #FAF5EA; --accent-up: #fff; --accent-rgb: 250 245 234; --stale: #FFB4AA; --on-accent: #2B47B5; }
@@ -100,6 +100,7 @@ button.bx:active .bx-m { transform: scale(.88); }
 .hs { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 26px; }
 .hb { display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: default; }
 button.hb { cursor: pointer; }
+.pg-back .px.arrow { transform: scaleX(-1); }
 .hb-seal .px.seal { width: 44px; height: 44px; }
 .hb-name { margin-top: 9px; font: 500 10px/1.25 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint); text-align: center; max-width: 9ch; }
 .is-kept .hb-name { color: var(--soft); }

@@ -170,6 +170,10 @@
     timesFor: timesFor, addDays: addDays, startOfDay: startOfDay
   };
   document.documentElement.setAttribute('data-sky', isNight ? 'night' : 'day');
+  // Scroll scenes take their length before the page draws, so nothing jumps once the scripts run.
+  // ?motion=0 stands in for Reduce Motion, for checking the still page.
+  var still = /[?&]motion=0/.test(location.search) || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if (!still) document.documentElement.classList.add('motion');
   var meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', isNight ? '#0D0D0E' : '#FAF5EA');
 })();
