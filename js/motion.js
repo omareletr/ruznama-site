@@ -58,12 +58,9 @@
   window.addEventListener('resize', onScroll);
   onScroll();
 
-  // The bar's one button goes straight to the store for this device; anywhere else, to both buttons.
-  var get = $('[data-get]'), ua = navigator.userAgent;
-  if (get) {
-    var to = /iPhone|iPod/.test(ua) ? $('.store-phone') : (/Macintosh/.test(ua) && navigator.maxTouchPoints < 2) ? $('.store-mac') : null;
-    if (to) { get.href = to.href; get.textContent = to.getAttribute('aria-label').replace(' on the App Store', ''); }
-  }
+  // The bar's one button goes straight to the beta on an iPhone; anywhere else, to the buttons at the foot.
+  var get = $('[data-get]');
+  if (get && /iPhone|iPod/.test(navigator.userAgent)) { var to = $('.store-phone'); if (to) get.href = to.href; }
 
   if (reduce || !gsap || !ST) return;
   gsap.registerPlugin(ST);

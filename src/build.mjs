@@ -113,12 +113,14 @@ function run(pattern, figure) {
   return `<span class="run" aria-hidden="true">${squares}${figure ? `<b>${figure}</b>` : ''}</span>`;
 }
 
-// The two ways to the App Store, one record for both (universal purchase), each its own button.
-const STORE = 'https://apps.apple.com/app/id6829597800';
+// The ways in while it's in beta: the iPhone app through TestFlight's public link (the "External
+// Testers" group), the Mac's not out yet, so it stands in the button's place without a link.
+const BETA = 'https://testflight.apple.com/join/cyVZVRZA';
 function store(which) {
-  const name = which === 'mac' ? 'Mac' : 'iPhone';
-  const href = `${STORE}?platform=${which === 'mac' ? 'mac' : 'iphone'}`;
-  return `<a class="store store-${which}" href="${href}" aria-label="Download for ${name} on the App Store">${svg(MARKS[which].rows, 0, which)}<span class="store-t"><small>Download for</small>${name}</span></a>`;
+  if (which === 'mac') {
+    return `<span class="store store-mac is-soon">${svg(MARKS.mac.rows, 0, 'mac')}<span class="store-t"><small>Coming soon to</small>Mac</span></span>`;
+  }
+  return `<a class="store store-phone" href="${BETA}" aria-label="Join the iPhone beta on TestFlight">${svg(MARKS.phone.rows, 0, 'phone')}<span class="store-t"><small>Join the beta for</small>iPhone</span></a>`;
 }
 
 // رُوزنامه as First Light writes it. js/page.js writes it into the canvas from media/written-name.png
