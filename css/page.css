@@ -34,14 +34,14 @@ a { color: inherit; }
 /* Navigation: wordmark, four links, the one action, on frosted glass floating over the page, as
    what floats over the app's page is glass. Tinted with the page's own paper, black at night. */
 .nav { position: fixed; z-index: 20; top: 12px; left: 0; right: 0; width: min(1120px, calc(100% - 2 * var(--m))); height: 56px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 8px 0 20px; border-radius: 999px; background: rgb(var(--paper-rgb) / .66); -webkit-backdrop-filter: blur(20px) saturate(1.6); backdrop-filter: blur(20px) saturate(1.6); box-shadow: inset 0 0 0 1px rgb(var(--ink-rgb) / .08), 0 6px 24px rgb(0 0 0 / .06); transition: background-color .35s var(--ease), transform .4s var(--ease); } /* taste-skill-ignore: the app's floating layer is glass */
-[data-sky="night"] .nav { box-shadow: inset 0 0 0 1px rgb(255 255 255 / .1), 0 6px 24px rgb(0 0 0 / .4); } /* taste-skill-ignore: the app's floating layer is glass */
+[data-sky="night"] .nav:not(.tone-flip), html:not([data-sky="night"]) .nav.tone-flip { box-shadow: inset 0 0 0 1px rgb(255 255 255 / .1), 0 6px 24px rgb(0 0 0 / .4); } /* taste-skill-ignore: the app's floating layer is glass */
 @media (prefers-reduced-transparency: reduce) { .nav { background: var(--paper); -webkit-backdrop-filter: none; backdrop-filter: none; } } /* taste-skill-ignore: turns the glass off */
-.nav .btn-sm { min-height: 40px; }
+.nav .btn-sm { min-height: 40px; transition: background-color .35s var(--ease), color .35s var(--ease), transform .15s ease-out; }
 .nav.is-hidden { transform: translateY(-100%); }
-.nav-mark { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; font-size: 17px; letter-spacing: -.01em; color: var(--ink); }
+.nav-mark { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; font-size: 17px; letter-spacing: -.01em; color: var(--ink); transition: color .35s var(--ease); }
 .nav-mark .px.star { width: 21px; height: 21px; }
 .nav-links { display: flex; gap: 28px; margin-left: auto; }
-.nav-links a { font-size: 15px; text-decoration: none; color: var(--soft); transition: color .3s var(--ease); }
+.nav-links a { padding: 12px 0; font-size: 15px; text-decoration: none; color: var(--soft); transition: color .3s var(--ease); }
 .nav-links a:hover, .nav-links a.is-here { color: var(--ink); }
 
 /* Hero: the sentence split by the page, a reel of days passing through it. */
@@ -279,7 +279,6 @@ html:not([data-sky]) .sky-night { display: none; }
 
 /* Tablets and phones: the sentence stacks round the page; sections become one column. */
 @media (max-width: 1100px) {
-  .nav-links { display: none; }
   .hero { height: auto; }
   .hero-stage { position: relative; height: auto; overflow: visible; padding: 104px var(--m) 72px; display: grid; gap: 28px; } /* taste-skill-ignore: 100vh is the fallback before 100svh */
   .hero-h { position: static; transform: none; display: block; font-size: clamp(36px, 9vw, 64px); line-height: 1.04; }
@@ -320,6 +319,9 @@ html:not([data-sky]) .sky-night { display: none; }
   .start-text { align-self: start; }
   .start-page { justify-self: stretch; width: auto; max-width: 440px; margin: 0 auto; }
 }
+/* The section links need 665px of bar beside the name and the button; below 760px they go, and the
+   name and the one button are enough for a page read top to bottom. */
+@media (max-width: 760px) { .nav-links { display: none; } }
 @media (max-width: 640px) {
   body { font-size: 16px; }
   .nav { top: 8px; height: 52px; padding: 0 6px 0 16px; }

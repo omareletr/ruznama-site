@@ -38,17 +38,24 @@
     if (id !== '#top' && target.focus) { target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
   });
 
-  // The bar takes the page's paper once the hero is behind it, and marks where you are.
+  // The bar takes the page's paper once the hero is behind it, and marks where you are. Over a section
+  // that flips day and night (cream after Maghrib, black by day) it takes that section's paper too, or
+  // its glass stands there as a grey slab.
   var nav = $('#nav'), hero = $('.hero');
-  var links = $$('.nav-links a');
+  var links = $$('.nav-links a'), flips = $$('section.tone-flip');
   function onScroll() {
     var y = window.scrollY;
     if (nav && hero) nav.classList.toggle('is-past', y > hero.offsetHeight - 80);
+    if (nav) {
+      var r = nav.getBoundingClientRect(), mid = r.top + r.height / 2;
+      nav.classList.toggle('tone-flip', flips.some(function (s) { var b = s.getBoundingClientRect(); return b.top <= mid && b.bottom > mid; }));
+    }
     var here = null;
     links.forEach(function (l) { var t = $(l.getAttribute('href')); if (t && t.getBoundingClientRect().top < 160) here = l; });
     links.forEach(function (l) { l.classList.toggle('is-here', l === here); if (l === here) l.setAttribute('aria-current', 'true'); else l.removeAttribute('aria-current'); });
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
   onScroll();
 
   // The bar's one button goes straight to the store for this device; anywhere else, to both buttons.
