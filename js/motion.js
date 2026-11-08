@@ -220,11 +220,11 @@
   }
 
   // The devices: the Mac's lid opens as it scrolls in, and the iPhone turns to face you beside it.
-  // Played, not scrubbed, once the whole Mac is on screen, so the opening is seen; back out above it.
+  // Played, not scrubbed, 75px of scroll before the whole Mac is on screen, so it opens as the base comes in; back out above it.
   var devices = gsap.timeline({ paused: true })
     .fromTo('.mac-lid', { rotateX: -84 }, { rotateX: 0, duration: 1.4, ease: 'power3.inOut' }, 0)
     .fromTo('.iphone', { y: 110, rotateY: -28, rotateX: 8, opacity: 0 }, { y: 0, rotateY: 0, rotateX: 0, opacity: 1, duration: 1.1, ease: 'power3.out' }, 0.45);
-  ST.create({ trigger: '.both-pics', start: 'bottom 94%', onEnter: function () { devices.play(); }, onLeaveBack: function () { devices.reverse(); } });
+  ST.create({ trigger: '.both-pics', start: 'bottom 94%+=75', onEnter: function () { devices.play(); }, onLeaveBack: function () { devices.reverse(); } });
 
   // The first page: the Bismillah inks in from the right in 1s.
   var basmala = $('[data-basmala]');
