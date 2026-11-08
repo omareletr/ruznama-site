@@ -416,6 +416,85 @@
     });
   }
 
+  // The name, written as First Light writes it: the app's strokes and timing, baked by
+  // tools/NameWriter/web.py into media/written-name.png (green, how much ink a pixel holds; red, when
+  // the pen reaches it, 0 to SPAN seconds). Ink shows over 14ms as the pen arrives, lands up to 45%
+  // lapis and dries in 0.19s, as the app's shader has it. At the foot, as the app's settings end on the
+  // name, written once as it comes into view. Without motion the CSS shows the font's own text instead.
+  (function () {
+    var names = $$('[data-name]');
+    if (!names.length || reduce || !doc.documentElement.classList.contains('motion')) return;
+    var SPAN = 1.4311, SOFT = 0.014, DRY = 0.19, END = SPAN + DRY;
+    var work = doc.createElement('canvas'), wx = null, frame = null, where, at, ink, count = 0, waiting = [];
+    var items = names.map(function (el) { var cv = $('.name-ink', el); return { el: el, cv: cv, g: cv.getContext('2d'), t: -1, started: false }; });
+    function rgba(s) { var m = String(s).match(/[\d.]+/g) || [0, 0, 0]; return [+m[0], +m[1], +m[2], m.length > 3 ? +m[3] : 1]; }
+    function paint(it) {
+      if (!count) return;
+      var dpr = Math.min(window.devicePixelRatio || 1, 3), w = Math.round(it.el.clientWidth * dpr), h = Math.round(it.el.clientHeight * dpr);
+      if (!w || !h) return;
+      if (it.cv.width !== w || it.cv.height !== h) { it.cv.width = w; it.cv.height = h; }
+      var cs = getComputedStyle(it.el), c = rgba(cs.color), wet = rgba(cs.textDecorationColor), t = it.t, px = frame.data;
+      for (var i = 0; i < count; i++) {
+        var dt = t - at[i], j = where[i] * 4, a = 0, m = 0;
+        if (dt > 0) {
+          var u = dt >= SOFT ? 1 : dt / SOFT, age = dt >= DRY ? 1 : dt / DRY;
+          a = ink[i] * u * u * (3 - 2 * u) * c[3];
+          m = (1 - age) * (1 - age) * 0.45;
+        }
+        px[j] = c[0] + (wet[0] - c[0]) * m; px[j + 1] = c[1] + (wet[1] - c[1]) * m; px[j + 2] = c[2] + (wet[2] - c[2]) * m; px[j + 3] = a;
+      }
+      wx.putImageData(frame, 0, 0);
+      it.g.clearRect(0, 0, w, h);
+      it.g.imageSmoothingEnabled = true; it.g.imageSmoothingQuality = 'high';
+      it.g.drawImage(work, 0, 0, w, h);
+    }
+    function write(it) {
+      if (it.started) return;
+      it.started = true;
+      var t0 = null;
+      requestAnimationFrame(function step(now) {
+        if (t0 === null) t0 = now;
+        var t = (now - t0) / 1000;
+        it.t = t >= END ? Infinity : t;
+        paint(it);
+        if (t < END) requestAnimationFrame(step);
+      });
+    }
+    function ready(fn) { if (count) fn(); else waiting.push(fn); }
+    var pic = new Image();
+    pic.onerror = function () { items.forEach(function (it) { it.el.classList.add('is-plain'); }); };
+    pic.onload = function () {
+      var W = pic.naturalWidth, H = pic.naturalHeight, read = doc.createElement('canvas');
+      read.width = W; read.height = H;
+      var rx = read.getContext('2d', { willReadFrequently: true });
+      rx.drawImage(pic, 0, 0);
+      var d = rx.getImageData(0, 0, W, H).data, n = 0, k;
+      for (k = 0; k < W * H; k++) if (d[k * 4 + 1]) n++;
+      where = new Uint32Array(n); at = new Float32Array(n); ink = new Uint8Array(n); n = 0;
+      for (k = 0; k < W * H; k++) if (d[k * 4 + 1]) { where[n] = k; at[n] = d[k * 4] / 255 * SPAN; ink[n] = d[k * 4 + 1]; n++; }
+      work.width = W; work.height = H; wx = work.getContext('2d'); frame = wx.createImageData(W, H);
+      count = n;
+      waiting.splice(0).forEach(function (fn) { fn(); });
+    };
+    pic.src = 'media/written-name.png';
+    var seen = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        seen.unobserve(e.target);
+        var it = items[names.indexOf(e.target)];
+        setTimeout(function () { ready(function () { write(it); }); }, 150);
+      });
+    }, { threshold: 0.9 });
+    items.forEach(function (it) { seen.observe(it.el); });
+    if ('ResizeObserver' in window) items.forEach(function (it) { new ResizeObserver(function () { if (it.started) paint(it); }).observe(it.el); });
+    // Day to night: the colour crossfades in 0.35s, so the written name follows it frame by frame.
+    new MutationObserver(function () {
+      var until = performance.now() + 600;
+      requestAnimationFrame(function again(now) { items.forEach(function (it) { if (it.started) paint(it); }); if (now < until) requestAnimationFrame(again); });
+    }).observe(doc.documentElement, { attributes: true, attributeFilter: ['data-sky'] });
+    RZ.nameAt = function (t) { ready(function () { items.forEach(function (it) { it.started = true; it.t = t; paint(it); }); }); };
+  })();
+
   // The page keeps the app's clock: at Maghrib and at Fajr it turns, crossfading in 0.35s.
   setInterval(function () {
     var now = new Date(), t = RZ.timesFor(RZ.startOfDay(now));

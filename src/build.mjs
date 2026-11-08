@@ -121,6 +121,15 @@ function store(which) {
   return `<a class="store store-${which}" href="${href}" aria-label="Download for ${name} on the App Store">${svg(MARKS[which].rows, 0, which)}<span class="store-t"><small>Download for</small>${name}</span></a>`;
 }
 
+// رُوزنامه as First Light writes it. js/page.js writes it into the canvas from media/written-name.png
+// (tools/NameWriter/web.py); without motion the font's own text stands there instead, set as the
+// picture has it: the box is font units 26 to 2176 across and 744 down to −89, so the run starts at
+// −26 and its baseline is 744 down.
+function writtenName() {
+  return '<canvas class="name-ink"></canvas><svg class="name-text" viewBox="0 0 2150 833" focusable="false">'
+    + '<text x="-26" y="744" font-size="1000" lang="fa">رُوزنامه</text></svg>';
+}
+
 // The page is written in parts (src/parts, in name order) and joined here.
 const partsDir = join(here, 'parts');
 const src = readdirSync(partsDir).filter((f) => f.endsWith('.html')).sort()
@@ -135,6 +144,7 @@ const expand = (text) => text.replace(/\{\{(\w+)(?::([^:}]*))?(?::([^}]*))?\}\}/
     case 'switch': return switchMark();
     case 'store': return store(a);
     case 'stores': return `<div class="stores">${store('phone')}${store('mac')}</div>`;
+    case 'name': return writtenName();
     default: throw new Error(`Unknown token ${kind}`);
   }
 });

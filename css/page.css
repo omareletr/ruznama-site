@@ -1,7 +1,7 @@
 /* The landing page around the app's fragments. One pair of margins (--m), one radius (--r), pill buttons. */
 *, *::before, *::after { box-sizing: border-box; }
 html { background: var(--paper); color: var(--text); -webkit-text-size-adjust: 100%; }
-html.is-turning, html.is-turning body, html.is-turning section, html.is-turning .pg, html.is-turning .sheet { transition: background-color .35s var(--ease), color .35s var(--ease); }
+html.is-turning, html.is-turning body, html.is-turning section, html.is-turning .pg, html.is-turning .sheet, html.is-turning .name { transition: background-color .35s var(--ease), color .35s var(--ease); }
 body { margin: 0; background: var(--paper); color: var(--text); font: 400 17px/1.55 var(--sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip; }
 h1, h2, h3, p { margin: 0; }
 h1, h2 { font-weight: 600; letter-spacing: -.022em; line-height: 1.02; color: var(--ink); text-wrap: balance; }
@@ -49,6 +49,19 @@ a { color: inherit; }
 .hero-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; padding-top: 64px; } /* taste-skill-ignore: 100vh is the fallback before 100svh */
 .hero-h { position: absolute; z-index: 2; left: var(--m); right: var(--m); top: calc(50% + 32px); transform: translateY(-50%); display: flex; justify-content: space-between; gap: 460px; font-size: clamp(40px, 3.6vw, 56px); font-weight: 500; letter-spacing: -.028em; pointer-events: none; }
 .hero-a, .hero-b { display: block; white-space: nowrap; }
+/* The name, written (tools/NameWriter/web.py, js/page.js): 1em is the font's 1000 units and the box is
+   the baked picture's. Without motion the font's own text stands there instead. */
+.name { position: relative; display: block; width: 2.15em; height: .833em; font-weight: 400; letter-spacing: 0; text-decoration-color: var(--accent); pointer-events: none; }
+.name-ink, .name-text { position: absolute; inset: 0; width: 100%; height: 100%; }
+.name-ink { display: none; }
+.name-text { overflow: visible; fill: currentColor; font-family: var(--nastaliq); }
+.motion .name-ink { display: block; }
+.motion .name-text { visibility: hidden; }
+.motion .name.is-plain .name-ink { display: none; }
+.motion .name.is-plain .name-text { visibility: visible; }
+/* The name between the last section and the footer, small and in the footer's soft ink, as the app's
+   settings end on it (Colophon). */
+.foot-name { grid-column: 1 / -1; justify-self: center; margin-bottom: 48px; font-size: 40px; }
 .reel { --w: 404px; --peek: 56px; --gap: 22px; --h: calc(100svh - 64px - 2 * (var(--peek) + var(--gap))); position: absolute; top: 64px; bottom: 0; left: 50%; width: var(--w); margin-left: calc(var(--w) / -2); }
 .reel-strip { position: absolute; left: 0; right: 0; top: calc(var(--peek) + var(--gap) - (var(--h) + var(--gap))); display: flex; flex-direction: column; gap: var(--gap); will-change: transform; }
 .frame { height: var(--h); overflow: hidden; border-radius: var(--r); }
@@ -352,6 +365,7 @@ html:not([data-sky]) .sky-night { display: none; }
   .foot { grid-template-columns: 1fr; gap: 8px; padding-top: 20vh; padding-bottom: 24px; }
   .foot-links { flex-wrap: wrap; gap: 8px 20px; }
   .foot-end { text-align: left; }
+  .foot-name { margin-bottom: 40px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation-duration: .01ms !important; }
