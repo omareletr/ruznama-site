@@ -126,10 +126,27 @@ function store(which) {
   return `<a class="store store-phone" href="${BETA}" aria-label="Join the iPhone beta on TestFlight">${svg(MARKS.phone.rows, 0, 'phone')}<span class="store-t"><small>Join the beta for</small>iPhone</span></a>`;
 }
 
-// Homebrew's one line, as a terminal's: the command in mono, COPY in the app's tracked capitals.
+// Homebrew's one line, as a terminal's, in the page's ink turned over (black by day, cream at night): the
+// command in its parts, the app's lapis caret waiting after it, and COPY behind the app's own box, which
+// fills as a task's does once it's copied.
 function brew() {
-  return `<div class="brew"><code class="brew-cmd"><span class="brew-p" aria-hidden="true">$ </span>${BREW.replace('--cask', '<span class="nw">--cask</span>')}</code>`
-    + `<button class="brew-copy" type="button" data-copy="${BREW}">Copy</button></div>`;
+  return `<div class="brew tone-flip"><code class="brew-cmd"><span class="brew-p" aria-hidden="true">$</span> `
+    + `<span class="brew-verb">brew install</span> <span class="brew-flag nw">--cask</span> <span class="brew-arg">omareletr/tap/ruznama</span>`
+    + `<i class="brew-caret" aria-hidden="true"></i></code>`
+    + `<button class="brew-copy" type="button" data-copy="${BREW}" aria-label="Copy the Homebrew command">${box()}<span class="brew-copy-t">Copy</span></button></div>`;
+}
+
+// What the beta costs, said at the buttons: its name and the founders' promise (never "free" after launch:
+// memory pricing). In the hero they stand with the buttons on one flat field of lapis (chosen 8 Nov from
+// mocks/offer-options.html, C), the final section's colour in small; that section is lapis already, so there
+// the words stand on it plainly.
+const PROMISE = 'Join before it goes on sale and you’ll always pay less.';
+function offer(kind) {
+  const words = `<p class="offer-h">Free while it’s in beta</p><p class="offer-t">${PROMISE}</p>`;
+  if (kind === 'field') {
+    return `<div class="offer-field tone-lapis">${words}<div class="stores">${store('phone')}${store('mac')}</div></div>`;
+  }
+  return `<div class="offer">${words}</div>`;
 }
 
 // رُوزنامه as First Light writes it. js/page.js writes it into the canvas from media/written-name.png
@@ -156,6 +173,7 @@ const expand = (text) => text.replace(/\{\{(\w+)(?::([^:}]*))?(?::([^}]*))?\}\}/
     case 'store': return store(a);
     case 'stores': return `<div class="stores">${store('phone')}${store('mac')}</div>`;
     case 'brew': return brew();
+    case 'offer': return offer(a);
     case 'name': return writtenName();
     default: throw new Error(`Unknown token ${kind}`);
   }

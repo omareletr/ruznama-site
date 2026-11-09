@@ -65,13 +65,23 @@
     if (to) { get.href = to.href; if (to.classList.contains('store-mac')) get.textContent = 'Download for Mac'; }
   }
 
-  // Homebrew's line copies itself, and says so for a moment.
+  // Homebrew's line copies itself, and says so for a moment: the box fills and Copy turns to Copied. Where the
+  // clipboard call is refused, the older way (a selected field and copy) is tried; if both fail it says nothing.
+  function copyOld(text) {
+    var f = doc.createElement('textarea'); f.value = text; f.setAttribute('readonly', ''); f.style.cssText = 'position:fixed;opacity:0';
+    doc.body.appendChild(f); f.select(); var ok = false; try { ok = doc.execCommand('copy'); } catch (e) {} f.remove(); return ok;
+  }
   document.querySelectorAll('[data-copy]').forEach(function (b) {
+    function done() {
+      var t = b.querySelector('.brew-copy-t') || b;
+      b.classList.add('is-done'); t.textContent = 'Copied';
+      clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove('is-done'); t.textContent = 'Copy'; }, 1800);
+    }
     b.addEventListener('click', function () {
-      if (!navigator.clipboard) return;
-      navigator.clipboard.writeText(b.getAttribute('data-copy')).then(function () {
-        b.textContent = 'Copied'; clearTimeout(b._t); b._t = setTimeout(function () { b.textContent = 'Copy'; }, 1600);
-      });
+      var text = b.getAttribute('data-copy');
+      var fallback = function () { if (copyOld(text)) done(); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+      else fallback();
     });
   });
 
@@ -103,7 +113,7 @@
            .from(lantern, { x: function () { return -lantern.offsetLeft; }, duration: 1.3, ease: 'power3.inOut' }, 0.55);
     }
   }
-  intro.from('.hero-foot > *, .hero-note', { y: 16, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.5);
+  intro.from('.hero-sub, .hero-act > *', { y: 16, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.5);
 
   // The reel: the days pass through the sentence as the page scrolls, holding on each.
   function stepSize() {

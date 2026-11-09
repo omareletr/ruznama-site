@@ -55,10 +55,6 @@
   $$('[data-ahead]').forEach(function (el) { el.textContent = pageDate(ahead[el.getAttribute('data-ahead')]); });
   $$('[data-ahead-hijri]').forEach(function (el) { el.textContent = hijri(ahead[el.getAttribute('data-ahead-hijri')]); });
 
-  var note = $('[data-place]');
-  if (note) note.textContent = RZ.zone
-    ? 'This is today’s page, with the prayer times for ' + RZ.zone[2] + ', guessed from your time zone. Try ticking something off.'
-    : 'This is today’s page, with today’s date. Try ticking something off.';
 
   // The prayer line (PrayerLine, PrayerLineScale): Fajr to Isha over 88% of its length, the night after.
   var ORDER = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];

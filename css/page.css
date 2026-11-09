@@ -26,13 +26,43 @@ a { color: inherit; }
 .store { display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 22px 8px 16px; border-radius: 999px; background: var(--accent); color: var(--on-accent); text-decoration: none; transition: background-color .3s var(--ease), transform .15s ease-out; }
 .store:active { transform: scale(.96); }
 .store .px { width: 22px; height: 18px; }
-/* Homebrew's line: a terminal's one row on the page's paper, the command in mono, COPY in tracked capitals. */
-.brew { display: flex; align-items: center; gap: 4px; width: min(100%, 470px); min-height: 52px; padding: 6px 6px 6px 18px; border-radius: 14px; box-shadow: inset 0 0 0 1px var(--line); }
-.brew-cmd { flex: 1; min-width: 0; padding: 8px 0; font: 400 14px/1.45 var(--mono); color: var(--ink); }
+/* Homebrew's line: a terminal's one row in the page's ink turned over (tone-flip: black by day, cream at night), the
+   command in its parts, the app's 2pt lapis caret after it, and COPY behind the app's box, which fills once copied. */
+.brew { display: flex; align-items: center; gap: 4px; width: min(100%, 470px); min-height: 52px; padding: 6px 6px 6px 16px; border-radius: 14px; background: var(--paper); color: var(--ink); }
+.brew-cmd { flex: 1; min-width: 0; padding: 8px 0; font: 400 13px/1.5 var(--mono); }
 .brew-p { color: var(--faint); }
-.brew-copy { flex: none; min-width: 72px; min-height: 40px; padding: 0 12px; border: 0; border-radius: 9px; background: none; font: 500 11px/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; color: var(--accent); cursor: pointer; transition: background-color .2s var(--ease); }
-@media (hover: hover) { .brew-copy:hover { background: rgb(var(--accent-rgb) / .1); } }
-.brew-copy:active { transform: scale(.96); }
+.brew-verb { color: var(--ink); }
+.brew-flag { color: var(--label); }
+.brew-arg { color: var(--accent); }
+.brew-caret { display: inline-block; width: 2px; height: 1.15em; margin-left: 3px; vertical-align: -.2em; background: var(--accent); animation: caret 1.1s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .brew-caret { animation: none; } }
+.brew-copy { flex: none; display: inline-flex; align-items: center; gap: 8px; min-width: 100px; min-height: 40px; padding: 0 12px; border: 0; border-radius: 8px; background: none; font: 500 11px/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; color: var(--label); cursor: pointer; transition: background-color .2s var(--ease), color .2s var(--ease); }
+.brew-copy .bx-m { flex: none; }
+.brew-copy.is-done { color: var(--accent); }
+@media (hover: hover) { .brew-copy:hover { background: rgb(var(--ink-rgb) / .08); color: var(--ink); } .brew-copy.is-done:hover { color: var(--accent); } .brew-copy:hover .bx-open rect { fill: rgb(var(--ink-rgb) / .45); } }
+.brew-copy:active .bx-m { transform: scale(.88); }
+.brew-copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* What the beta costs, with the buttons: in the hero a flat field of lapis holding its name, the founders' promise
+   and the buttons (tone-lapis turns them cream on it); at the foot, already lapis, the same words plainly. */
+.offer-field { display: grid; justify-items: start; gap: 8px; padding: 24px; border-radius: var(--r); background: var(--paper); color: var(--ink); }
+.offer-field .stores { margin-top: 8px; }
+.offer { display: grid; gap: 8px; }
+.offer-h { font: 600 20px/28px var(--sans); letter-spacing: -.01em; color: var(--ink); }
+.offer-t { font-size: 16px; line-height: 24px; color: var(--text); text-wrap: pretty; }
+/* A short window has no room under the headline for the promise: the label stays at the buttons, the sentence is said again at the foot and in Questions. */
+@media (min-width: 1101px) and (max-height: 880px) { .hero .offer-t { display: none; } }
+/* Below 1000px of height the headline rides higher, and higher again below 800, so the field clears it; on narrow
+   desktops the field closes in so both buttons keep one row. */
+@media (min-width: 1101px) and (max-height: 1000px) { .hero .hero-h { top: calc(50% - 8px); } }
+@media (min-width: 1101px) and (max-height: 800px) { .hero .hero-h { top: calc(50% - 40px); } }
+@media (min-width: 1101px) and (max-width: 1300px) { .offer-field { padding: 16px; } .offer-field .stores { gap: 8px; } .offer-field .store { padding: 8px 16px 8px 12px; } }
+@media (min-width: 1101px) and (max-width: 1250px) { .offer-field .store { padding: 8px 16px; } .offer-field .store .px { display: none; } }
+@media (min-width: 1101px) and (max-width: 1180px) { .hero .brew { display: none; } } /* too narrow for the command: it stays under On Mac */
+@media (min-width: 1101px) and (max-height: 700px) { .hero .brew { display: none; } } /* too short for it too */
+@media (min-width: 1101px) and (max-width: 1150px) { .offer-field { padding: 12px; } .offer-field .store { padding: 8px 12px; } }
+@media (max-width: 520px) { .offer-field { padding: 16px; } .offer-field .stores { gap: 8px; } .offer-field .store { gap: 8px; padding: 8px 14px 8px 12px; } }
 .faq code { font: 400 15px/1 var(--mono); }
 .nw { white-space: nowrap; }
 .store .px.phone { padding: 0 5px; }
@@ -74,11 +104,11 @@ a { color: inherit; }
 .reel { --w: 404px; --peek: 56px; --gap: 22px; --h: calc(100svh - 64px - 2 * (var(--peek) + var(--gap))); position: absolute; top: 64px; bottom: 0; left: 50%; width: var(--w); margin-left: calc(var(--w) / -2); }
 .reel-strip { position: absolute; left: 0; right: 0; top: calc(var(--peek) + var(--gap) - (var(--h) + var(--gap))); display: flex; flex-direction: column; gap: var(--gap); will-change: transform; }
 .frame { height: var(--h); overflow: hidden; border-radius: var(--r); }
-.hero-foot { position: absolute; left: var(--m); bottom: 32px; width: min(380px, calc(50% - 236px)); display: grid; gap: 20px; }
-.hero-sub { font-size: 20px; line-height: 1.5; color: var(--ink); }
+.hero-foot { position: absolute; left: var(--m); bottom: 32px; width: min(470px, calc(50% - 252px - var(--m))); display: grid; gap: 20px; }
+/* Up to 470px, as wide as Homebrew's line on one row, and always 48px clear of the day page, which starts 204px left
+   of the centre; narrower, the command takes two rows. */
+.hero-sub { max-width: 380px; font-size: 20px; line-height: 1.5; color: var(--ink); }
 .hero-act { display: grid; gap: 12px; }
-.hero-for { font-size: 15px; line-height: 1.45; color: var(--soft); }
-.hero-note { position: absolute; right: var(--m); bottom: 32px; width: min(280px, calc(50% - 250px)); text-align: right; font-size: 15px; line-height: 1.45; color: var(--soft); }
 
 /* How a task lives: the days stand in a row, as when you swipe between pages in the app. At 4am
    the row moves on one, and the task is already on the page that comes round. */
@@ -271,8 +301,9 @@ html:not([data-sky]) .sky-night { display: none; }
 .start-text { align-self: end; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; justify-items: start; padding-bottom: 8px; }
 .start h2 { font-size: clamp(44px, 6.7vw, 96px); font-weight: 500; letter-spacing: -.035em; line-height: .95; }
 .start-text p { max-width: 30ch; font-size: 20px; line-height: 1.45; color: var(--ink); }
-.start-text .stores { margin-top: 8px; }
-.start-text .brew { margin-top: -6px; }
+.start-text .offer { margin-top: 8px; }
+.start-text .offer p { max-width: none; } .start-text .offer .offer-h { font-size: 20px; line-height: 28px; } .start-text .offer .offer-t { font-size: 16px; line-height: 24px; }
+.start-text .stores { margin-top: -8px; }
 .start-page { justify-self: end; width: 404px; min-height: 560px; border-radius: var(--r); }
 .first-lines .ln { animation: pop .3s var(--ease) both; }
 @keyframes pop { from { opacity: 0; transform: translateY(6px); } }
@@ -303,9 +334,8 @@ html:not([data-sky]) .sky-night { display: none; }
   .reel .frame.is-today { display: block; height: 600px; }
   .reel::before, .reel::after { content: ""; display: block; height: 24px; margin: 0 0 14px; border-radius: 0 0 var(--r) var(--r); background: var(--paper); opacity: .7; }
   .reel::after { margin: 14px 0 0; border-radius: var(--r) var(--r) 0 0; }
-  .hero-foot, .hero-note { position: static; width: auto; max-width: 440px; margin: 0 auto; }
+  .hero-foot { position: static; width: auto; max-width: 440px; margin: 0 auto; }
   .hero-foot { justify-self: stretch; }
-  .hero-note { text-align: left; font-size: 15px; }
   .how-stage { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .motion .how-stage { grid-template-rows: auto minmax(0, 1fr); gap: 8px; align-items: start; padding: 96px var(--m) 16px; }
   .how-steps { margin-top: 24px; }
