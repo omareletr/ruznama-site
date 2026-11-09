@@ -58,9 +58,22 @@
   window.addEventListener('resize', onScroll);
   onScroll();
 
-  // The bar's one button goes straight to the beta on an iPhone; anywhere else, to the buttons at the foot.
-  var get = $('[data-get]');
-  if (get && /iPhone|iPod/.test(navigator.userAgent)) { var to = $('.store-phone'); if (to) get.href = to.href; }
+  // The bar's one button goes straight to the beta for this device; anywhere else, to the buttons at the foot.
+  var get = $('[data-get]'), ua = navigator.userAgent;
+  if (get) {
+    var to = /iPhone|iPod/.test(ua) ? $('.store-phone') : (/Macintosh/.test(ua) && navigator.maxTouchPoints < 2) ? $('.store-mac') : null;
+    if (to) { get.href = to.href; if (to.classList.contains('store-mac')) get.textContent = 'Download for Mac'; }
+  }
+
+  // Homebrew's line copies itself, and says so for a moment.
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (!navigator.clipboard) return;
+      navigator.clipboard.writeText(b.getAttribute('data-copy')).then(function () {
+        b.textContent = 'Copied'; clearTimeout(b._t); b._t = setTimeout(function () { b.textContent = 'Copy'; }, 1600);
+      });
+    });
+  });
 
   if (reduce || !gsap || !ST) return;
   gsap.registerPlugin(ST);

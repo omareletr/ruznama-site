@@ -114,13 +114,22 @@ function run(pattern, figure) {
 }
 
 // The ways in while it's in beta: the iPhone app through TestFlight's public link (the "External
-// Testers" group), the Mac's not out yet, so it stands in the button's place without a link.
+// Testers" group); the Mac app signed with Developer ID and notarised, as a .dmg from the latest
+// release on omareletr/homebrew-tap, or through Homebrew from the same tap.
 const BETA = 'https://testflight.apple.com/join/cyVZVRZA';
+const DMG = 'https://github.com/omareletr/homebrew-tap/releases/latest/download/Ruznama.dmg';
+const BREW = 'brew install --cask omareletr/tap/ruznama';
 function store(which) {
   if (which === 'mac') {
-    return `<span class="store store-mac is-soon">${svg(MARKS.mac.rows, 0, 'mac')}<span class="store-t"><small>Coming soon to</small>Mac</span></span>`;
+    return `<a class="store store-mac" href="${DMG}" aria-label="Download the Mac beta">${svg(MARKS.mac.rows, 0, 'mac')}<span class="store-t"><small>Download for</small>Mac</span></a>`;
   }
   return `<a class="store store-phone" href="${BETA}" aria-label="Join the iPhone beta on TestFlight">${svg(MARKS.phone.rows, 0, 'phone')}<span class="store-t"><small>Join the beta for</small>iPhone</span></a>`;
+}
+
+// Homebrew's one line, as a terminal's: the command in mono, COPY in the app's tracked capitals.
+function brew() {
+  return `<div class="brew"><code class="brew-cmd"><span class="brew-p" aria-hidden="true">$ </span>${BREW.replace('--cask', '<span class="nw">--cask</span>')}</code>`
+    + `<button class="brew-copy" type="button" data-copy="${BREW}">Copy</button></div>`;
 }
 
 // رُوزنامه as First Light writes it. js/page.js writes it into the canvas from media/written-name.png
@@ -146,6 +155,7 @@ const expand = (text) => text.replace(/\{\{(\w+)(?::([^:}]*))?(?::([^}]*))?\}\}/
     case 'switch': return switchMark();
     case 'store': return store(a);
     case 'stores': return `<div class="stores">${store('phone')}${store('mac')}</div>`;
+    case 'brew': return brew();
     case 'name': return writtenName();
     default: throw new Error(`Unknown token ${kind}`);
   }

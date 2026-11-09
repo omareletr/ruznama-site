@@ -26,9 +26,15 @@ a { color: inherit; }
 .store { display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 22px 8px 16px; border-radius: 999px; background: var(--accent); color: var(--on-accent); text-decoration: none; transition: background-color .3s var(--ease), transform .15s ease-out; }
 .store:active { transform: scale(.96); }
 .store .px { width: 22px; height: 18px; }
-.store.is-soon { background: none; color: var(--soft); box-shadow: inset 0 0 0 1px var(--line); cursor: default; }
-.store.is-soon:active { transform: none; }
-@media (hover: hover) { .store.is-soon:hover { background: none; } }
+/* Homebrew's line: a terminal's one row on the page's paper, the command in mono, COPY in tracked capitals. */
+.brew { display: flex; align-items: center; gap: 4px; width: min(100%, 470px); min-height: 52px; padding: 6px 6px 6px 18px; border-radius: 14px; box-shadow: inset 0 0 0 1px var(--line); }
+.brew-cmd { flex: 1; min-width: 0; padding: 8px 0; font: 400 14px/1.45 var(--mono); color: var(--ink); }
+.brew-p { color: var(--faint); }
+.brew-copy { flex: none; min-width: 72px; min-height: 40px; padding: 0 12px; border: 0; border-radius: 9px; background: none; font: 500 11px/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; color: var(--accent); cursor: pointer; transition: background-color .2s var(--ease); }
+@media (hover: hover) { .brew-copy:hover { background: rgb(var(--accent-rgb) / .1); } }
+.brew-copy:active { transform: scale(.96); }
+.faq code { font: 400 15px/1 var(--mono); }
+.nw { white-space: nowrap; }
 .store .px.phone { padding: 0 5px; }
 .store .px.mac { height: 14px; margin: 2px 0; }
 .store-t { display: grid; font: 600 17px/1.1 var(--sans); letter-spacing: -.01em; white-space: nowrap; }
@@ -234,7 +240,9 @@ html:not([data-sky]) .sky-night { display: none; }
 .both-col h3 .px.mac { height: 14px; }
 .both-col ul { grid-row: span 3; display: grid; grid-template-rows: subgrid; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); } /* taste-skill-ignore: rows of a list, as a grouped list in Settings */
 .both-col li { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 17px; line-height: 1.45; color: var(--ink); } /* taste-skill-ignore: rows of a list, as a grouped list in Settings */
-.both-col .store { justify-self: start; margin-top: 32px; }
+.both-col > .store { justify-self: start; align-self: start; margin-top: 32px; }
+.both-col { min-width: 0; }
+.both-get { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: start; gap: 14px; margin-top: 32px; min-width: 0; }
 
 /* Privacy: the other half of the day. */
 .private { display: grid; grid-template-columns: 7fr 5fr; gap: 56px; align-items: end; min-height: 86vh; padding: 140px var(--m); background: var(--paper); color: var(--text); }
@@ -260,10 +268,11 @@ html:not([data-sky]) .sky-night { display: none; }
 
 /* The close: the app's first page, already open. */
 .start { display: grid; grid-template-columns: minmax(0, 1fr) 460px; gap: 56px; align-items: center; min-height: 94vh; padding: 120px var(--m); background: var(--paper); color: var(--text); }
-.start-text { align-self: end; display: grid; gap: 20px; justify-items: start; padding-bottom: 8px; }
+.start-text { align-self: end; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; justify-items: start; padding-bottom: 8px; }
 .start h2 { font-size: clamp(44px, 6.7vw, 96px); font-weight: 500; letter-spacing: -.035em; line-height: .95; }
 .start-text p { max-width: 30ch; font-size: 20px; line-height: 1.45; color: var(--ink); }
 .start-text .stores { margin-top: 8px; }
+.start-text .brew { margin-top: -6px; }
 .start-page { justify-self: end; width: 404px; min-height: 560px; border-radius: var(--r); }
 .first-lines .ln { animation: pop .3s var(--ease) both; }
 @keyframes pop { from { opacity: 0; transform: translateY(6px); } }
