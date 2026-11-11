@@ -245,8 +245,9 @@ a { color: inherit; }
 .both { padding: 160px var(--m); overflow-x: clip; }
 .both-lead { display: grid; grid-template-columns: 5fr 7fr; gap: 56px; align-items: end; }
 .both-lead p { margin-top: 0; }
-.both-pics { position: relative; width: min(100%, 1080px); margin: 88px auto 0; padding: 0 24% 24px 0; perspective: 2400px; perspective-origin: 50% 0%; }
+.both-pics { position: relative; width: min(100%, 1080px); margin: 88px auto 0; padding: 0 0 24px; perspective: 2400px; perspective-origin: 50% 0%; }
 .mac { margin: 0; }
+.both-pics > .mac { width: 70%; } /* a share of the frame itself: padding in % reads the section's width, so the Mac shrank on wide screens */
 .mac-lid { position: relative; transform-origin: 50% 100%; transform-style: preserve-3d; }
 .mac-screen { position: relative; aspect-ratio: 1.54; padding: 14px 14px 20px; border-radius: 20px 20px 6px 6px; background: #0B0B0C; box-shadow: 0 0 0 2px #C9C9CE, 0 0 0 3px #A9A9AF; backface-visibility: hidden; } /* taste-skill-ignore: a device's rim */
 .mac-display { position: relative; height: 100%; overflow: hidden; border-radius: 9px 9px 2px 2px; background: #FAF5EA; }
@@ -358,7 +359,7 @@ html:not([data-sky]) .sky-night { display: none; }
   .capture-lead, .faq h2 { position: static; }
   .demo { grid-template-columns: 1fr; }
   .moment-pic { height: 460px; max-width: 520px; }
-  .both-pics { padding: 0 22% 24px 0; }
+  .both-pics > .mac { width: 78%; }
   .iphone { width: 26%; right: 0; }
   .start-text { align-self: start; }
   .start-page { justify-self: stretch; width: auto; max-width: 440px; margin: 0 auto; }
@@ -388,7 +389,8 @@ html:not([data-sky]) .sky-night { display: none; }
   .ctl { padding: 6px 18px; }
   .moment { margin-top: 104px; }
   .moment-pic { height: 400px; }
-  .both-pics { margin-top: 48px; padding: 0 16% 16px 0; }
+  .both-pics { margin-top: 48px; padding: 0 0 16px; }
+  .both-pics > .mac { width: 84%; }
   .mac-screen { padding: 6px 6px 9px; border-radius: 10px 10px 4px 4px; }
   .mac-display { border-radius: 4px 4px 1px 1px; }
   .mac-notch { top: 6px; height: 9px; border-radius: 0 0 4px 4px; }

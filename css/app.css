@@ -30,7 +30,7 @@
   --nastaliq: "Gulzar", "Noto Nastaliq Urdu", serif;
   --ease: cubic-bezier(.22, 1, .36, 1);
   --spread: cubic-bezier(.5, 1, .89, 1);
-  --m: clamp(16px, 2.3vw, 32px);
+  --m: max(clamp(16px, 2.3vw, 32px), (100vw - 1448px) / 2); /* past a 1512px window the page stops widening: wide screens get margins, not 2400px lines */
   --r: 16px;
 }
 
